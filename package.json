@@ -11,7 +11,18 @@
     "core-js": "^3.6.5",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
-    "vuex": "^3.4.0"
+    "vuex": "^3.4.0",
+    "@fortawesome/fontawesome-free": "^5.15.4",
+    "@popperjs/core": "^2.10.2",
+    "axios": "^0.24.0",
+    "bootstrap": "^4.6.1",
+    "bootstrap-vue": "^2.21.2",
+    "jquery": "^1.9.1",
+    "moment-timezone": "^0.5.34",
+    "vue-moment": "^4.1.0",
+    "vue-numeric": "^2.4.3",
+    "vue-toasted": "^1.1.28",
+    "vuejs-datepicker": "^1.6.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
