@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    {{this.otherAllowance}}
+    <!-- {{this.otherAllowance}} -->
     <!-- {{this.otRates}} -->
     <!-- <b-row> Information:
       <span id="sp" v-show="loanInfo">

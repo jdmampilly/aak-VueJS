@@ -12,41 +12,29 @@
       <b-row class="mt-2">
         <b-col cols="2" class="col-left">Total Loans:</b-col>
         <b-col cols="2" class="col-right">
-          <b-form-input
-            class="col-right"
-            type="number"
-            :readonly="true"
-            v-model="empLoanSummary.totalLoans"
-          ></b-form-input>
+           <label class="form-control form-control-sm">
+               {{empLoanSummary.indeminity | crAmountTotal}}
+          </label >
         </b-col>
         <b-col cols="2" class="col-left">Loan Installment</b-col>
         <b-col cols="2" class="col-right">
-          <b-form-input
-            class="col-right"
-            type="number"
-            :readonly="true"
-            v-model="empLoanSummary.loanInstallment"
-          ></b-form-input>
+          <label class="form-control form-control-sm">
+               {{empLoanSummary.indeminity | loanInstallment}}
+          </label >
         </b-col>
         <b-col cols="2" class="col-left">Indeminity</b-col>
         <b-col cols="2" class="col-right">
-          <b-form-input
-            class="col-right"
-            type="number"
-            :readonly="true"
-            v-model="empLoanSummary.indeminity"
-          ></b-form-input>
+          <label class="form-control form-control-sm">
+               {{empLoanSummary.indeminity | formatter}}
+          </label >
         </b-col>
       </b-row>
       <b-row class="mt-2">
         <b-col cols="2" class="col-left">Total Paid</b-col>
         <b-col cols="2" class="col-right">
-          <b-form-input
-            class="col-right"
-            type="number"
-            :readonly="true"
-            v-model="empLoanSummary.totalPaid"
-          ></b-form-input>
+          <label class="form-control form-control-sm">
+               {{empLoanSummary.drAmountTotal | formatter}}
+          </label >
         </b-col>
         <b-col cols="2" class="col-left">Additional Installment</b-col>
         <b-col cols="2">
@@ -59,31 +47,23 @@
         </b-col>
         <b-col cols="2" class="col-left">Basic Salary</b-col>
         <b-col cols="2" class="col-right">
-          <b-form-input
-            class="col-right"
-            type="number"
-            :readonly="true"
-            v-model="empLoanSummary.basicSalary"
-          ></b-form-input>
+           <label class="form-control form-control-sm">
+               {{empLoanSummary.basicSalary | formatter}}
+          </label >
         </b-col>
       </b-row>
       <b-row class="mt-1">
         <b-col cols="2" class="col-left">Last transaction Date</b-col>
-        <b-col cols="2" class="col-left">
-          <b-form-input
-            class="col-right"
-            :readonly="true"
-            v-model="empLoanSummary.lastTransactionDate"
-          ></b-form-input>
+        <b-col cols="2" class="col-right">
+           <label class="form-control form-control-sm">
+              {{ empLoanSummary.lastTrnDate | moment("DD-MM-YYYY") }}
+           </label>
         </b-col>
         <b-col cols="2" class="col-left">Total Installment</b-col>
         <b-col cols="2" class="col-right">
-          <b-form-input
-            class="col-right"
-            type="number"
-            :readonly="true"
-            v-model="empLoanSummary.totalInstallment"
-          ></b-form-input>
+           <label class="form-control form-control-sm">
+               {{this.totalInstallment | formatter}}
+          </label >
         </b-col>
       </b-row>
 
@@ -99,7 +79,17 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['empLoanSummary'])
+    ...mapGetters(['empLoanSummary']),
+   totalInstallment () {
+        return (parseFloat(this.empLoanSummary.additionalInstallment) + parseFloat(this.empLoanSummary.loanInstallment)).toFixed(3)
+    }
+  },
+   filters: {
+    formatter: function (value) {
+      return new Intl.NumberFormat(undefined, {
+        minimumFractionDigits: 3
+      }).format(value)
+    }
   },
   methods: {
     // ...mapActions([''])

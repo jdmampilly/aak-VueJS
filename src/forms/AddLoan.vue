@@ -59,7 +59,6 @@
               class="col-right"
               id="input-drAmount"
               v-model="employeeLoan.drAmount"
-              placeholder="Debit Amount"
             ></b-form-input>
           </b-col>
           <b-col cols="2">
@@ -70,7 +69,6 @@
               class="col-right"
               id="input-crAmount"
               v-model="employeeLoan.crAmount"
-              placeholder="Credit Amount"
             ></b-form-input>
           </b-col>
         </b-row>
@@ -82,7 +80,6 @@
             <b-form-input
               id="input-description"
               v-model="employeeLoan.description"
-              placeholder="description"
             ></b-form-input>
           </b-col>
         </b-row>
@@ -100,10 +97,10 @@
         </b-row>
         <b-row class="mt-3">
           <b-col cols="1" offset="3">
-            <b-button @click="closeModal()">Submit</b-button>
+            <b-button variant="success" class="mr-1" @click="save()">Submit</b-button>
           </b-col>
           <b-col cols="1">
-            <b-button @click="closeModal()">Cancel</b-button>
+            <b-button variant="danger" class="mr-1" @click="closeModal()">Cancel</b-button>
           </b-col>
         </b-row>
         <br />
@@ -158,6 +155,50 @@ export default {
           duration: 5000,
         });
       }
+    },
+    checkForm: function () {
+      console.log('checking form data')
+      this.errors = []
+      if (!this.employeeLoan.empCode) {
+        this.errors.push('Employee Code Required.')
+      }
+      if (!this.employeeLoan.drAmount || !this.employeeLoan.crAmount)   {
+        this.errors.push('Debit or Credit Required.')
+      }
+      if (!this.employeeLoan.description) {
+        this.errors.push('Description Required.')
+      }
+      if (!this.errors.length) {
+        return true
+      } else {
+        this.errors.unshift(
+          'Fields highlighted in yellow are required, please enter following ..'
+        )
+      }
+    },
+    houseKeeping () {
+      this.errors = []
+    },
+    async save () {
+      this.checkForm()
+      if (!this.errors.length) {
+          await this.saveEmployee(this.employeeLoan)
+        this.$toasted.show(
+          this.message,
+          {
+            theme: 'bubble',
+            position: 'top-right',
+            duration: 5000
+          })
+      } else {
+        // console.log('Show errors!!')
+        this.$toasted.show(this.errors, {
+          theme: 'bubble',
+          position: 'top-right',
+          duration: 5000
+        })
+      }
+      this.houseKeeping()
     },
     closeModal() {
       this.defaultStateEmpLoan()
