@@ -241,7 +241,7 @@ const actions = {
       .then(response => {
         console.log('=== No Error returned ====')
         commit('setMessage', 'Sucess')
-        commit('setLoanHistoryList', response.data)
+        commit('setEmployeeLoan', response.data)
       })
       .catch(error => {
         console.log(error.response.data)

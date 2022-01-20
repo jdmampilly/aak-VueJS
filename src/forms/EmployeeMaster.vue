@@ -526,9 +526,9 @@
     <hr />
     <b-row align-h="center">
       <!-- <b-button v-show='isEditMode' class="mr-1" @click.prevent="saveRecord()">Submit</b-button> -->
-      <b-button variant="primary"  class="mr-1"  @click.prevent="save()">Save</b-button>
+      <b-button variant="success"  class="mr-1"  @click.prevent="save()">Save</b-button>
       <!-- <b-button class="mr-1">Print</b-button> -->
-      <b-button variant="primary" class="mr-1" @click="resetVar(), houseKeeping()">Cancel</b-button>
+      <b-button variant="outline-primary" class="mr-1" @click="resetVar(), houseKeeping()">Clear</b-button>
       <b-button variant="primary"  v-show="showForm" class="mr-1" @click="setFormDisplay(false), setIsEditMode(true), houseKeeping()">Close</b-button>
     </b-row>
   </div>

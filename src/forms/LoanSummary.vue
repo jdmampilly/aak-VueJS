@@ -1,25 +1,26 @@
 <template>
   <div class="main-div">
-
       <b-row class="mt-2">
         <b-col cols="2" class="col-left">
-          <label>Employee Loan Summary</label>
+          <!-- <label><h6>Loan Summary</h6></label> -->
+          <b-badge variant="warning"><h6>Loan Summary</h6></b-badge>
         </b-col>
         <b-col cols="2" offset="6" class="col-left">
-          <label>Payroll Summary</label>
+          <!-- <label><h6>Payroll Summary</h6></label> -->
+            <b-badge  variant="warning"><h6>Payroll Summary</h6></b-badge>
         </b-col>
       </b-row>
       <b-row class="mt-2">
         <b-col cols="2" class="col-left">Total Loans:</b-col>
         <b-col cols="2" class="col-right">
            <label class="form-control form-control-sm">
-               {{empLoanSummary.indeminity | crAmountTotal}}
+               {{empLoanSummary.crAmountTotal  | formatter}}
           </label >
         </b-col>
         <b-col cols="2" class="col-left">Loan Installment</b-col>
         <b-col cols="2" class="col-right">
           <label class="form-control form-control-sm">
-               {{empLoanSummary.indeminity | loanInstallment}}
+               {{empLoanSummary.loanInstallment | formatter}}
           </label >
         </b-col>
         <b-col cols="2" class="col-left">Indeminity</b-col>
@@ -41,8 +42,7 @@
           <b-form-input
             class="col-right"
             type="number"
-            id="input-additionalInstallment"
-            v-model="empLoanSummary.additionalInstallment"
+            v-model="installmentAdditional"
           ></b-form-input>
         </b-col>
         <b-col cols="2" class="col-left">Basic Salary</b-col>
@@ -72,16 +72,16 @@
 <script>
 import { mapGetters } from 'vuex'
 export default {
+ props: ['myprop'],
   data () {
     return {
-      indeminity: '5500',
-      basicSalary: '1800'
+      installmentAdditional: 0
     }
   },
   computed: {
     ...mapGetters(['empLoanSummary']),
    totalInstallment () {
-        return (parseFloat(this.empLoanSummary.additionalInstallment) + parseFloat(this.empLoanSummary.loanInstallment)).toFixed(3)
+        return (parseFloat(this.installmentAdditional) + parseFloat(this.empLoanSummary.loanInstallment)).toFixed(3)
     }
   },
    filters: {
@@ -93,10 +93,19 @@ export default {
   },
   methods: {
     // ...mapActions([''])
+  
   },
   mounted () {
     console.log('mounted loan summary')
-  }
+  },
+    watch: {
+    installmentAdditional: {
+      handler: function () {
+        console.log('in watch')
+       this.$emit("calculateAdditionalInstallment", this.installmentAdditional);
+      },
+    },
+  },
 }
 </script>
 <style  scoped>

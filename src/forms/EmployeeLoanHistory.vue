@@ -36,10 +36,10 @@ export default {
       },
       moreDetails: {
         attr1: { name: "trnDescription", label: "Description" },
-        attr2: { name: "trnId", label: "Transaction Id" },
+        attr2: { name: "voucherNo", label: "Voucher No" },
         attr3: { name: "voucherNo", label: "Voucher No" },
-        attr4: { name: "passage", label: "Passage" },
-        attr5: { name: "", label: "Basic Salary" },
+        attr4: { name: "", label: "" },
+        attr5: { name: "", label: " " },
         attr6: { name: "", label: "" },
       },
     };

@@ -79,7 +79,7 @@
           <b-col cols="6" class="col-left">
             <b-form-input
               id="input-description"
-              v-model="employeeLoan.description"
+              v-model="employeeLoan.trnDescription"
             ></b-form-input>
           </b-col>
         </b-row>
@@ -100,15 +100,15 @@
             <b-button variant="success" class="mr-1" @click="save()">Submit</b-button>
           </b-col>
           <b-col cols="1">
-            <b-button variant="danger" class="mr-1" @click="closeModal()">Cancel</b-button>
+            <b-button variant="outline-primary" class="mr-1" @click="closeModal()">Clear</b-button>
           </b-col>
         </b-row>
         <br />
       </div>
       <div class="form-background">
-        <hr />
-        <loanSummary />
-        <hr />
+        <!-- <hr /> -->
+        <loanSummary  @calculateAdditionalInstallment="getAdditionalInstallment"/>
+        <!-- <hr /> -->
       </div>
       <hr />
     </b-modal>
@@ -121,6 +121,7 @@ import { mapActions, mapGetters } from "vuex";
 export default {
   data() {
     return {
+      additionalInstallment: 0,
       searchEmp: {
         attr1: { name: "id", label: "Employee Code" },
         attr2: { name: "empName", label: "Employee Name" },
@@ -156,6 +157,10 @@ export default {
         });
       }
     },
+    getAdditionalInstallment: function (x) {
+      this.additionalInstallment = x
+      console.log(this.additionalInstallment)
+    },
     checkForm: function () {
       console.log('checking form data')
       this.errors = []
@@ -165,7 +170,7 @@ export default {
       if (!this.employeeLoan.drAmount || !this.employeeLoan.crAmount)   {
         this.errors.push('Debit or Credit Required.')
       }
-      if (!this.employeeLoan.description) {
+      if (!this.employeeLoan.trnDescription) {
         this.errors.push('Description Required.')
       }
       if (!this.errors.length) {
@@ -182,7 +187,9 @@ export default {
     async save () {
       this.checkForm()
       if (!this.errors.length) {
-          await this.saveEmployee(this.employeeLoan)
+          this.employeeLoan.trnDate = new Date()
+          this.employeeLoan.additionalInstallment = this.additionalInstallment
+          await this.saveLoanTransaction(this.employeeLoan)
         this.$toasted.show(
           this.message,
           {
@@ -190,6 +197,7 @@ export default {
             position: 'top-right',
             duration: 5000
           })
+          this.closeModal()
       } else {
         // console.log('Show errors!!')
         this.$toasted.show(this.errors, {
