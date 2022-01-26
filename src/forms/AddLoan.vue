@@ -2,7 +2,7 @@
   <div>
     <b-modal id="bv-modal-addLoan" size="xl" hide-header-close hide-footer>
       <H4>Add Loan</H4>
-      <!-- {{this.empLoanSummary}} -->
+      {{ this.empLoanSummary }}
       <div class="main-div">
         <hr />
         <b-row class="mt-2">
@@ -97,17 +97,26 @@
         </b-row>
         <b-row class="mt-3">
           <b-col cols="1" offset="3">
-            <b-button variant="success" class="mr-1" @click="save()">Submit</b-button>
+            <b-button variant="success" class="mr-1" @click="save()"
+              >Submit</b-button
+            >
           </b-col>
           <b-col cols="1">
-            <b-button variant="outline-primary" class="mr-1" @click="closeModal()">Clear</b-button>
+            <b-button
+              variant="outline-primary"
+              class="mr-1"
+              @click="closeModal()"
+              >Clear</b-button
+            >
           </b-col>
         </b-row>
         <br />
       </div>
       <div class="form-background">
         <!-- <hr /> -->
-        <loanSummary  @calculateAdditionalInstallment="getAdditionalInstallment"/>
+        <loanSummary
+          @calculateAdditionalInstallment="getAdditionalInstallment"
+        />
         <!-- <hr /> -->
       </div>
       <hr />
@@ -133,19 +142,24 @@ export default {
     searchSm,
   },
   computed: {
-    ...mapGetters(["employeeLoan", "employeeList", "fetchStartRec", 'empLoanSummary']),
+    ...mapGetters([
+      "employeeLoan",
+      "employeeList",
+      "fetchStartRec",
+      "empLoanSummary",
+    ]),
   },
   methods: {
     ...mapActions([
       "saveLoanTransaction",
       "fetchEmployeeList",
       "fetchEmployeeLoan",
-      'fetchEmployeeLoanInfo',
-      'defaultStateEmpLoan'
+      "fetchEmployeeLoanInfo",
+      "defaultStateEmpLoan",
     ]),
-    async fetchEmployeeCode (x) {
-      this.fetchEmployeeLoan(x)
-      this.fetchEmployeeLoanInfo(x)
+    async fetchEmployeeCode(x) {
+      this.fetchEmployeeLoan(x);
+      this.fetchEmployeeLoanInfo(x);
     },
     async getEmployee() {
       await this.fetchEmployee(this.employeeLoan.empCode);
@@ -158,61 +172,67 @@ export default {
       }
     },
     getAdditionalInstallment: function (x) {
-      this.additionalInstallment = x
-      console.log(this.additionalInstallment)
+      this.additionalInstallment = x;
+      console.log(this.additionalInstallment);
     },
     checkForm: function () {
-      console.log('checking form data')
-      this.errors = []
+      console.log("checking form data");
+      this.errors = [];
       if (!this.employeeLoan.empCode) {
-        this.errors.push('Employee Code Required.')
+        this.errors.push("Employee Code Required.");
       }
-      if (!this.employeeLoan.drAmount || !this.employeeLoan.crAmount)   {
-        this.errors.push('Debit or Credit Required.')
+      if (!this.employeeLoan.drAmount & !this.employeeLoan.crAmount) {
+        this.errors.push("Debit or Credit Required.");
       }
       if (!this.employeeLoan.trnDescription) {
-        this.errors.push('Description Required.')
+        this.errors.push("Description Required.");
+      }
+      if (this.additionalInstallment === 0) {
+        if (
+          (this.empLoanSummary.loanInstallment === 0) &
+          (this.employeeLoan.crAmount > 0)
+        ) {
+          this.errors.push("Loan installment required");
+        }
       }
       if (!this.errors.length) {
-        return true
+        return true;
       } else {
         this.errors.unshift(
-          'Fields highlighted in yellow are required, please enter following ..'
-        )
+          "Fields highlighted in yellow are required, please enter following .."
+        );
       }
     },
-    houseKeeping () {
-      this.errors = []
+    houseKeeping() {
+      this.errors = [];
     },
-    async save () {
-      this.checkForm()
+    async save() {
+      this.checkForm();
       if (!this.errors.length) {
-          this.employeeLoan.trnDate = new Date()
-          this.employeeLoan.additionalInstallment = this.additionalInstallment
-          await this.saveLoanTransaction(this.employeeLoan)
-        this.$toasted.show(
-          this.message,
-          {
-            theme: 'bubble',
-            position: 'top-right',
-            duration: 5000
-          })
-          this.closeModal()
+        this.employeeLoan.trnDate = new Date();
+        this.employeeLoan.additionalInstallment = this.additionalInstallment;
+        await this.saveLoanTransaction(this.employeeLoan);
+        this.$toasted.show(this.message, {
+          theme: "bubble",
+          position: "top-right",
+          duration: 5000,
+        });
+        this.closeModal();
       } else {
         // console.log('Show errors!!')
         this.$toasted.show(this.errors, {
-          theme: 'bubble',
-          position: 'top-right',
-          duration: 5000
-        })
+          theme: "bubble",
+          position: "top-right",
+          duration: 5000,
+        });
       }
-      this.houseKeeping()
+      this.houseKeeping();
     },
     closeModal() {
-      this.defaultStateEmpLoan()
+      this.defaultStateEmpLoan();
       this.$root.$emit("bv::hide::modal", "bv-modal-addLoan", "#btnShow");
     },
-    defaultState() {}
+    defaultState() {},
   },
 };
 </script>

@@ -12,7 +12,7 @@ const getDefaultState = () => {
     loanHistory: [],
     // employeeList: [],
     employeeLoan: {},
-    employeeLeaveTransaction: [],
+    leaveTransaction: [],
     employeeLeave: {},
     metAllowance: [],
     metDeduction: [],
@@ -40,7 +40,7 @@ const state = {
   loanHistory: [],
   employeeList: [],
   employeeLoan: {},
-  employeeLeaveTransaction: [],
+  leaveTransaction: [],
   employeeLeave: {},
   metAllowance: [],
   metDeduction: [],
@@ -61,7 +61,7 @@ const getters = {
   empLoanSummary: state => state.empLoanSummary,
   loanHistory: state => state.loanHistory,
   employeeLeave: state => state.employeeLeave,
-  employeeLeaveTransaction: state => state.employeeLeaveTransaction,
+  leaveTransaction: state => state.leaveTransaction,
   ot1Rate: state => state.ot1Rate,
   ot2Rate: state => state.ot2Rate,
   nsRate: state => state.nsRate,
@@ -288,7 +288,27 @@ const actions = {
     commit
   }, o) {
     commit('addDeductionRow', o)
-  }
+  },
+
+  async fetchLeaveHistory ({
+    commit
+  }, data) {
+    const url = process.env.VUE_APP_API_URL + `/filterLeaveTransactions/${state.startRec}/5`
+    await axios
+      .post(url, data, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(response => {
+        commit('setLeaveTransaction', response.data)
+        commit('setTotalLHRows', parseInt(response.headers.x_total_count))
+      })
+      .catch(error => {
+        console.log(error.response.data)
+        commit('setMessage', 'Error:' + JSON.stringify(error.response.data.errorMessage))
+      })
+  },
 
 }
 
@@ -312,6 +332,7 @@ const mutations = {
   setLoanHistoryList: (state, data) => (state.loanHistoryList = data),
   setTotalLHRows: (state, data) => (state.totalLHRows = data),
   setEmpLoanSummary: (state, data) => (state.empLoanSummary = data),
+  setLeaveTransaction: (state, data) => (state.leaveTransaction = data),
   setEmployeeLoan: (state, data) => {
     state.employeeLoan = { ...state.employeeLoan, empCode: data.id }
     state.employeeLoan = { ...state.employeeLoan, empName: data.empName }

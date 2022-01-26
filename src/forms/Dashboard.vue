@@ -10,7 +10,7 @@
         ></b-tab>
         <b-tab title="Leaves">
           <b-card-text>
-            <loanHistory />
+            <leaveHistory />
           </b-card-text>
         </b-tab>
         <b-tab title="Loans">
@@ -39,8 +39,9 @@
 <script>
 import home from '../views/Home.vue'
 import employeeList from './EmployeeList.vue'
-import loanHistory from './LoanHistory.vue'
+// import loanHistory from './LoanHistory.vue'
 import employeeLoanHistory from './EmployeeLoanHistory.vue'
+import leaveHistory from './LeaveHistory.vue'
 import salary from './Salary.vue'
 // import monthEndTransactionList from './MonthEndTransactionList.vue'
 export default {
@@ -51,9 +52,10 @@ export default {
   components: {
     home,
     employeeList,
-    loanHistory,
+    // loanHistory,
     employeeLoanHistory,
-    salary
+    salary,
+    leaveHistory
     // monthEndTransactionList
   }
 }
